@@ -1,0 +1,11 @@
+FROM resin/rpi-raspbian
+
+COPY . /usr/src/mlbrowser
+WORKDIR /usr/local/bin
+
+RUN apt-get update && \
+	apt-get install libqt5webkit5 libqt5webkit5-dev qtdeclarative5-dev qt5-default qt5-qmake build-essential && \
+	qmake DEFINES+=_BROWSER_ DEFINES+=_PROPERTYCHANGER_ /usr/src/mlbrowser/src/mlbrowser.pro && \
+	make && \
+	apt-get remove --purge build-essential libqt5webkit5-dev qtdeclarative5-dev qt5-qmake && \
+	apt-get autoremove --purge
